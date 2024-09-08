@@ -1,0 +1,41 @@
+{
+  "name": "chaos-organizer_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stasyabunina/rxjs_backend.git"
+  },
+  "author": "me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stasyabunina/rxjs_backend/issues"
+  },
+  "homepage": "https://github.com/stasyabunina/rxjs_backend#readme",
+  "dependencies": {
+    "@koa/cors": "^5.0.0",
+    "@koa/multer": "^3.0.2",
+    "@sefinek/random-animals": "^2.0.3",
+    "axios": "^1.7.5",
+    "ffmpeg": "^0.0.4",
+    "forever": "^4.0.3",
+    "fs": "^0.0.1-security",
+    "fs-extra": "^11.2.0",
+    "generate-api-key": "^1.0.2",
+    "http-event-stream": "^0.2.0",
+    "koa": "^2.15.0",
+    "koa-body": "^6.0.1",
+    "koa-combine-routers": "^4.0.2",
+    "koa-cors": "^0.0.16",
+    "koa-json": "^2.0.2",
+    "koa-router": "^12.0.1",
+    "koa-static": "^5.0.0",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^9.0.1",
+    "ws": "^8.16.0"
+  }
+}
