@@ -8,7 +8,6 @@ const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const random = require("@sefinek/random-animals");
 const cors = require("@koa/cors");
-const ffmpeg = require("ffmpeg");
 
 const app = new Koa();
 
@@ -313,49 +312,6 @@ router.post("/new-message", async (ctx, next) => {
   }
 });
 
-router.post("/video-image", async (ctx, next) => {
-  const { filename, apiKey } = ctx.request.body;
-
-  const decodedApiKey = decodeURIComponent(apiKey);
-
-  const username = users.find(user => user.apiKey === decodedApiKey).username;
-
-  if (!username) {
-    console.log('Username not found');
-    ctx.response.status = 404;
-    return;
-  }
-
-  try {
-    const process = new ffmpeg(`./public/${username}/${filename}`);
-    process.then(function (video) {
-      video.fnExtractFrameToJPG(`./public/${username}`, {
-        frame_rate: 1,
-        number: 1,
-        file_name: `${filename.split(".")[0]}`
-      }, function (error, files) {
-        if (!error) {
-          console.log("Image successfully created");
-          ctx.response.status = 200;
-        } else {
-          console.error("Error creating image:", error);
-          ctx.response.status = 500;
-          ctx.response.body = JSON.stringify({ error: "Error creating image" });
-        }
-      });
-    }, function (err) {
-      console.log("Error: " + err);
-      ctx.response.status = 500;
-      ctx.response.body = JSON.stringify({ error: "Error processing video" });
-    });
-  } catch (e) {
-    console.log(e.code);
-    console.log(e.msg);
-    ctx.response.status = 500;
-    ctx.response.body = JSON.stringify({ error: "Internal server error" });
-  }
-});
-
 router.post("/delete-message", async (ctx, next) => {
   const { apiKey, id, fileName } = ctx.request.body;
 
@@ -520,22 +476,6 @@ router.post("/delete-pinned", async (ctx, next) => {
         }
       }
     }
-  }
-
-  if (fileName) {
-    const username = users.find(user => user.apiKey === apiKey).username;
-
-    const filePath = path.join(__dirname, "public", username, fileName);
-
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error("Error:", err);
-        ctx.response.status = 500;
-        ctx.response.body = { message: err };
-        return;
-      }
-      console.log("success");
-    });
   }
 
   ctx.response.status = 200;
