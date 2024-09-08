@@ -318,16 +318,13 @@ router.post("/video-image", async (ctx, next) => {
 
   const decodedApiKey = decodeURIComponent(apiKey);
 
-  const user = users.find(user => user.apiKey === decodedApiKey);
+  const username = users.find(user => user.apiKey === decodedApiKey).username;
 
-  if (!user) {
+  if (!username) {
     console.log('Username not found');
     ctx.response.status = 404;
-    ctx.response.body = JSON.stringify({ error: "User not found" });
     return;
   }
-
-  const username = user.username;
 
   try {
     const process = new ffmpeg(`./public/${username}/${filename}`);
@@ -339,7 +336,6 @@ router.post("/video-image", async (ctx, next) => {
       }, function (error, files) {
         if (!error) {
           console.log("Image successfully created");
-          ctx.response.body = JSON.stringify({ filename: `${filename.split(".")[0]}_1.jpg` });
           ctx.response.status = 200;
         } else {
           console.error("Error creating image:", error);
